@@ -1,2 +1,4 @@
 # codeR
-private project under dev
+
+R programming challenges platform.
+This project is not finished yet.
