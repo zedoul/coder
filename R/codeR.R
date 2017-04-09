@@ -26,7 +26,7 @@ coder <- function(resume.class = "default", ...) {
 
 resume.default <- function(e, ...) {
   # Specify additional arguments
-  mainMenu(e)
+  menu_start(e)
 }
 
 resume <- function(...) UseMethod("resume")

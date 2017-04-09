@@ -1,11 +1,10 @@
-mainMenu.default <- function(e) {
+menu_start.default <- function(e) {
   cat("Welcome to coder\n")
-  cat("Menu:\n")
-  cat("1- Level 1\n")
-  cat("2- Level 2\n")
-  cat("3- Level 3\n\n")
-  cat("Selection: ")
-  .det <- readline()
+  choices <- c("Level 1",
+               "Level 2",
+               "Level 3")
+  .title <- "title"
+  .det <-  menu(choices, title = .title)
 }
 
-mainMenu <- function(e, ...) UseMethod("mainMenu")
+menu_start <- function(e, ...) UseMethod("menu_start")
