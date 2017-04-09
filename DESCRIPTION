@@ -1,8 +1,8 @@
-Package: codeR
+Package: coder
 Type: Package
 Version: 0.0.0.0001
-Title: codeR
-Description: codeR
+Title: coder
+Description: coder
 Date: 2017-03-01
 Author: Kim Seonghyun [aut, cre]
 Maintainer: Kim Seonghyun <shyeon.kim@scipi.net>
@@ -10,11 +10,10 @@ Depends:
     R (>= 3.3.0)
 Imports:
     readr,
-    shiny,
+    devtools,
     magrittr
 License: Apache License 2.0 | file LICENSE
 Suggests:
-    devtools,
     knitr,
     rmarkdown
 LazyData: true

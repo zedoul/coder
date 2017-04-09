@@ -1,4 +1,4 @@
-# codeR
+# coder
 
 R programming challenges platform.
 This project is not finished yet.
