@@ -1,0 +1,17 @@
+title: "hello, world"
+author: ""
+description:
+- "Hello world is blah blah"
+- "Example"
+tags:
+- "fundamental"
+examples:
+- input:
+  - "data.frame(blah,"
+  - "           blah)"
+  output:
+  - "answer"
+- input:
+  - ""
+  output:
+  - ""
