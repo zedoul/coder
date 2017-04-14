@@ -1,3 +1,5 @@
+#' Coder
+#'
 #' @export
 #' @examples
 #' \dontrun{

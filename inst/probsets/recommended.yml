@@ -1,0 +1,9 @@
+- probset: level1
+  desc: the level 1
+  install: install_probset('level1')
+- probset: level2
+  desc: the level 2
+  install: install_probset('level2')
+- probset: level3
+  desc: the level 3
+  install: install_probset('level3')

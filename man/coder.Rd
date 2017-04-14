@@ -2,8 +2,12 @@
 % Please edit documentation in R/coder.R
 \name{coder}
 \alias{coder}
+\title{Coder}
 \usage{
 coder(resume.class = "default", ...)
+}
+\description{
+Coder
 }
 \examples{
 \dontrun{
