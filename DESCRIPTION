@@ -11,7 +11,8 @@ Depends:
 Imports:
     readr,
     devtools,
-    magrittr
+    magrittr,
+    whoami
 License: Apache License 2.0 | file LICENSE
 Suggests:
     knitr,

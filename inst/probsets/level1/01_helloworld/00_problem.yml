@@ -1,17 +1,7 @@
-title: "hello, world"
-author: ""
-description:
-- "Hello world is blah blah"
-- "Example"
 tags:
 - "fundamental"
-examples:
+testcases:
 - input:
-  - "data.frame(blah,"
-  - "           blah)"
+  - helloworld()
   output:
-  - "answer"
-- input:
-  - ""
-  output:
-  - ""
+  - "Hello, World!"

@@ -1,3 +1,20 @@
+#' Return probset class
+coder_probsets <- function() {
+  probset_path <- file.path(find.package(getOption("coder.pkgname")),
+                            "probsets")
+  probset_paths <- list.dirs(probset_path,
+                             full.names = T,
+                             recursive = F)
+
+  menu_probsets(probset_paths)
+}
+
+#' Return prob class
+coder_prob <- function(probset) {
+  stopifnot(inherits(probset, "coder.probset"))
+  menu_probset(probset)
+}
+
 #' Coder
 #'
 #' @export
@@ -5,30 +22,16 @@
 #' \dontrun{
 #' coder()
 #' }
-coder <- function(resume.class = "default", ...) {
-  # Create new environment
-  removeTaskCallback("mini")
-
-  e <- new.env(globalenv())
-  class(e) <- c(class(e),
-                resume.class)
-
-  cb <- function(expr, val, ok, vis, data = e) {
-    e$expr <- expr
-    e$val <- val
-    e$ok <- ok
-    e$vis <- vis
-    resume(e, ...)
+coder <- function(probset = NULL) {
+  cat("Welcome to coder\n")
+  if (is.null(probset)) {
+    probset <- coder_probsets()
+    options(coder.probset = probset)
+    coder(probset)
+  } else {
+    stopifnot(inherits(probset, "coder.probset"))
+    prob <- coder_prob(probset)
+    options(coder.prob = prob)
+    cat("prob_view() to start\n")
   }
-  addTaskCallback(cb, name = "mini")
-
-  # Remove non-informative task callback prints
-  invisible()
 }
-
-resume.default <- function(e, ...) {
-  # Specify additional arguments
-  menu_start(e)
-}
-
-resume <- function(...) UseMethod("resume")

@@ -1,35 +1,23 @@
-prob_view <- function(e, ...) UseMethod("prob_view")
-
 #' @importFrom tools Rd2txt
-prob_view.default <- function(e, prob_path) {
-  stopifnot(dir.exists(prob_path))
-  prob_rd_path <- file.path(prob_path, "00_problem.Rd")
+#' @export
+prob_view <- function(prob = NULL) {
+  if (is.null(prob)) {
+    prob <- getOption("coder.prob")
+  }
+  stopifnot(inherits(prob, "coder.prob"))
 
-  temp <- tools::Rd2txt(prob_rd_path,
-                        out = tempfile("Rtxt"))
-  file.show(temp,
+  temp_rtxt <- tools::Rd2txt(prob$rd_path,
+                             out = tempfile("Rtxt"))
+  file.show(temp_rtxt,
             title = gettextf("Problem: %s",
-                             sQuote(basename(prob_path))),
+                             sQuote(basename(prob$name))),
             delete.file = TRUE)
 }
 
-create_template <- function(prob_path) {
-  # prob_path <- system.file("probsets", "level1", "01_helloworld",
-  #                          package = "coder")
-  template_file <- file.path(prob_path, "00_template.R")
-  stopifnot(file.exists(template_file))
-
-  tempfile_path <- tempfile(fileext = ".R")
-  tempfile_conn <- file(tempfile_path)
-  writeLines(readLines(template_file),
-             tempfile_conn)
-
-  cat("Template has been created in:\n",
-      tempfile_path, "\n")
-}
-
-submit <- function(prob_path,
+submit <- function(prob,
                    tempfile_path) {
+  stopifnot(inherits(prob, "coder.prob"))
+
   # TODO: Implement "source" in better and secured way compared to
   #       "base::source"
   # TODO: Implement "testcases run"

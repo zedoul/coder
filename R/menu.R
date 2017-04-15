@@ -5,44 +5,39 @@ menu_probset <- function(e, ...) UseMethod("menu_probset")
 .recom_path <- file.path(find.package(getOption("coder.pkgname")),
                          "probsets", "recommeded.yaml")
 
-menu_start.default <- function(e) {
-  cat("Welcome to coder\n")
-
-  .probset_path <- file.path(find.package(getOption("coder.pkgname")),
-                             "probsets")
-  .probsets_paths <- list.dirs(.probset_path, full.names = T, recursive = F)
-
-  .det <- menu_probsets(e, .probsets_paths)
-}
-
-menu_probsets.default <- function(e, .probsets_paths) {
-  probset <- NULL
+#' Show list of problem sets
+menu_probsets.default <- function(probset_paths) {
+  selected_probset_name <- NULL
   is_selected <- F
   while(is_selected == F) {
     .title <- "Select problem sets"
-    probset_names <- basename(.probsets_paths)
-    probset <-  select.list(probset_names,
-                            title = .title,
-                            graphic= F)
-    if (probset == "") {
-      menu_start(e)
+    probset_names <- basename(probset_paths)
+    selected_probset_name <-  select.list(probset_names,
+                                          title = .title,
+                                          graphic= F)
+    if (selected_probset_name == "") {
+      break
     }
 
     cat("\n")
-    .title <- paste("Problem set:", probset)
+    .title <- paste("Problem set:", selected_probset_name)
     .sel <-  select.list(c("Yes", "No"),
                          title = .title,
                          graphic= F)
-    if (.sel == "Yes") is_selected <- T
+    if (.sel == "Yes") {
+      break
+    }
   }
 
-  .det <- menu_probset(e, probset)
+  probset(selected_probset_name)
 }
 
-menu_probset.default <- function(e, probset) {
-  .probset_path <- file.path(find.package(getOption("coder.pkgname")),
-                             "probsets", probset)
-  .prob_paths <- list.dirs(.probset_path, full.names = T, recursive = F)
+#' Show problem set
+#'
+#' Currently, it shows just list of problems
+menu_probset.default <- function(probset) {
+  stopifnot(inherits(probset, "coder.probset"))
+  .prob_paths <- list.dirs(probset$path, full.names = T, recursive = F)
   .prob_names <- basename(.prob_paths)
 
   .title <- "Select problem"
@@ -50,7 +45,7 @@ menu_probset.default <- function(e, probset) {
                             title = .title,
                             graphic= F)
   if (.prob_name == "") {
-    menu_probsets(e)
+    return(NULL)
   }
 
   cat("\n")
@@ -60,6 +55,7 @@ menu_probset.default <- function(e, probset) {
                        graphic= F)
   if (.sel == "Yes") is_selected <- T
 
-  prob_path <- file.path(.probset_path, .prob_name)
-  prob_view(e, prob_path)
+  # Create prob
+  prob(probset$name,
+       .prob_name)
 }
