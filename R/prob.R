@@ -94,7 +94,7 @@ test.coder.prob <- function(.prob) {
 
   for (i in 1:length(testcases)) {
     # TODO: Use txtProgressBar instead
-    cat("Testing", i, "... ")
+    cat("Test", i, "... ")
     testcase <- testcases[[i]]
     tryCatch({
       solution_test(.prob$solution_path, testcase)
@@ -124,7 +124,7 @@ submit.coder.prob <- function(.prob) {
   start_time <- Sys.time()
 
   for (i in 1:length(testcases)) {
-    cat("Testing", i, "... ")
+    cat("Test", i, "... ")
     testcase <- testcases[[i]]
     tryCatch({
       solution_test(.prob$solution_path, testcase)
