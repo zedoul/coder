@@ -12,20 +12,20 @@ for a new technique.
 
 # How-To-Use
 
-1. You'll need R environment at least 3.0.0
+1. You'll need to have R environment, at least 3.0.0
 
   ```
   > R --version
   3.3.0
   ```
 
-2. Install coder
+2. Install coder with devtools
 
   ```
   devtools::install_github("zedoul/coder")
   ```
 
-3. Load coder
+3. Run coder
 
   ```
   library(coder)
