@@ -2,8 +2,8 @@ menu_start <- function(e, ...) UseMethod("menu_start")
 menu_probsets <- function(e, ...) UseMethod("menu_probsets")
 menu_probset <- function(e, ...) UseMethod("menu_probset")
 
-.recom_path <- file.path(find.package(getOption("coder.pkgname")),
-                         "probsets", "recommeded.yaml")
+.recom_path <- system.file("probsets", "recommeded.yaml",
+                           package = "coder")
 
 #' Show list of problem sets
 menu_probsets.default <- function(probset_paths) {

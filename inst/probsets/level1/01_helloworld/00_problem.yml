@@ -5,3 +5,8 @@ testcases:
   - helloworld()
   output:
   - "Hello, World!"
+systemtests:
+- input:
+  - helloworld()
+  output:
+  - "Hello, World!"
