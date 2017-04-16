@@ -121,6 +121,8 @@ submit.coder.prob <- function(.prob) {
   testcases <- desc$systemtests
   is_failed <- F
 
+  start_time <- Sys.time()
+
   for (i in 1:length(testcases)) {
     cat("Testing", i, "... ")
     testcase <- testcases[[i]]
@@ -133,8 +135,39 @@ submit.coder.prob <- function(.prob) {
     })
   }
 
+  end_time <- Sys.time()
+
   if (!is_failed) {
     cat("All systemtests have been passed\n")
+    cat(end_time - start_time, "(s) \n")
+  }
+
+  # Save user result into user_data
+  .user <- getOption("coder.user")
+
+  if (!is.null(.user)) {
+    # Copy solution and its score into user_data
+    stopifnot(file.exists(.prob$solution_path))
+    stopifnot(file.exists(.user$path))
+
+    target_path <- file.path(.user$path,
+                             .user$name,
+                             .prob$probset_name,
+                             .prob$name,
+                             paste0(.user$name, ".R"))
+    if (!dir.exists(dirname(target_path))) {
+      dir.create(dirname(target_path), recursive = T)
+    }
+
+    res <- file.copy(from = .prob$solution_path,
+                     to = target_path)
+
+    if (res) {
+      cat("Solution has been saved successfully\n")
+    } else {
+      message("Failed to save solution into:\n",
+              target_path)
+    }
   }
 }
 

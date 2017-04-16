@@ -1,3 +1,4 @@
+
 #' Return probset class
 coder_probsets <- function() {
   probset_path <- system.file("probsets",
@@ -15,19 +16,11 @@ coder_prob <- function(probset) {
   menu_probset(probset)
 }
 
-#' Coder
-#'
-#' @export
-#' @examples
-#' \dontrun{
-#' coder()
-#' }
-coder <- function(probset = NULL) {
-  cat("Welcome to coder\n")
+.coder <- function(probset = NULL) {
   if (is.null(probset)) {
     probset <- coder_probsets()
     options(coder.probset = probset)
-    coder(probset)
+    .coder(probset)
   } else {
     stopifnot(inherits(probset, "coder.probset"))
     prob <- coder_prob(probset)
@@ -37,4 +30,22 @@ coder <- function(probset = NULL) {
     cat("test_prob():\n")
     cat("submit_prob():\n")
   }
+}
+
+#' Coder
+#'
+#' @export
+#' @examples
+#' \dontrun{
+#' coder()
+#' }
+coder <- function() {
+  cat("Welcome to coder\n")
+  tryCatch({
+    options(coder.user = user())
+  }, error = function(e) {
+    message("Failed to create user account")
+    print(e)
+  })
+  .coder()
 }

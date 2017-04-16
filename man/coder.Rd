@@ -4,7 +4,7 @@
 \alias{coder}
 \title{Coder}
 \usage{
-coder(probset = NULL)
+coder()
 }
 \description{
 Coder
