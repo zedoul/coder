@@ -1,11 +1,41 @@
 # coder
 
 R programming challenges platform.
-This project is not finished yet.
+This project is NOT finished yet.
+
+# Background
+
+At workplaces engineers organise programming challenages
+where they hack on interesting data analysis skills.
+It is a good way to get that side-project going or validate idea
+for a new technique.
+
+# How-To-Use
+
+1. You'll need R environment at least 3.0.0
+
+  ```
+  > R --version
+  3.3.0
+  ```
+
+2. Install coder
+
+  ```
+  devtools::install_github("zedoul/coder")
+  ```
+
+3. Load coder
+
+  ```
+  library(coder)
+  coder()
+  ```
 
 # Plan
 
-* Write Lisp style R code
 * R platform in R
+* Make domain language in R
+* Write Lisp style R code
 * Maintain solutions like the similar way as [CocoaPods](https://github.com/CocoaPods/Specs)
-* Release alpha version until the end of 2017
+* Release alpha version no later than the end of 2017

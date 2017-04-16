@@ -24,6 +24,7 @@ prob <- function(probset_name,
   close(solution_conn)
   stopifnot(file.exists(solution_path))
 
+  # Return coder.prob class
   structure(list(probset_name = probset_name,
                  name = prob_name,
                  path = prob_path,
@@ -92,6 +93,7 @@ test.coder.prob <- function(.prob) {
   is_failed <- F
 
   for (i in 1:length(testcases)) {
+    # TODO: Use txtProgressBar instead
     cat("Testing", i, "... ")
     testcase <- testcases[[i]]
     tryCatch({
@@ -113,6 +115,8 @@ test <- function(.prob) {
 }
 
 submit.coder.prob <- function(.prob) {
+  # I know this function looks duplicated with test.coder.prob, and this is
+  # intended: let's play dumb during the development stage
   desc <- yaml::yaml.load_file(.prob$yml_path)
   testcases <- desc$systemtests
   is_failed <- F

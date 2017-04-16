@@ -5,7 +5,7 @@ test_that("prob", {
   prob_name <- "01_helloworld"
   .prob <- coder:::prob(probset_name, prob_name)
   expect_equal(is.null(.prob), F)
-  expect_error(prob(probset_namae,
+  expect_error(prob(probset_name,
                     prob_name,
                     "/asdfdsf/dsfsd/asfdsdfsdf/sdfsdfsf"))
 })
