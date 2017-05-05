@@ -10,10 +10,12 @@ prob <- function(probset_name,
   # Create files for given problem
   stopifnot(dir.exists(prob_path))
   rd_path <- file.path(prob_path, "00_problem.Rd")
-  yml_path <- file.path(prob_path, "00_problem.yml")
+  test_sample_path <- file.path(prob_path, "00_test_sample.R")
+  test_system_path <- file.path(prob_path, "00_test_system.R")
   template_path <- file.path(prob_path, "00_template.R")
   stopifnot(file.exists(rd_path))
-  stopifnot(file.exists(yml_path))
+  stopifnot(file.exists(test_sample_path))
+  stopifnot(file.exists(test_system_path))
   stopifnot(file.exists(template_path))
 
   # Create solution file
@@ -29,7 +31,8 @@ prob <- function(probset_name,
                  name = prob_name,
                  path = prob_path,
                  rd_path = rd_path,
-                 yml_path = yml_path,
+                 test_sample_path = test_sample_path,
+                 test_system_path = test_system_path,
                  template_path = template_path,
                  solution_path = solution_path),
             class = "coder.prob")
@@ -75,38 +78,30 @@ edit.coder.prob <- function(prob) {
 }
 
 #' @importFrom yaml yaml.load_file
-solution_test <- function(solution_path, testcase) {
+#' @importFrom testthat test_file
+solution_test <- function(solution_path,
+                          test_path) {
   # TODO: Do not use \code{source}, this can't be good. More specifically,
   # implement \code{source.coder.prob} in better and secured way compared to
   # \code{base::source}
   test_env <- new.env()
   source(solution_path, local = test_env)
-  expr <- testcase$input
-  ans <- eval(parse(text = expr), envir = test_env)
-  stopifnot(testcase$output == ans)
+  res <- testthat::test_file(test_path, env = test_env)
+  stopifnot(as.data.frame(res)[1, "failed"] == 0)
 }
 
-#' @importFrom yaml yaml.load_file
 test.coder.prob <- function(.prob) {
-  desc <- yaml::yaml.load_file(.prob$yml_path)
-  testcases <- desc$testcases
   is_failed <- F
 
-  for (i in 1:length(testcases)) {
-    # TODO: Use txtProgressBar instead
-    cat("Test", i, "... ")
-    testcase <- testcases[[i]]
-    tryCatch({
-      solution_test(.prob$solution_path, testcase)
-      cat("passed\n")
-    }, error = function(e) {
-      is_failed <<- T
-      cat("failed\n")
-    })
-  }
+  tryCatch({
+    solution_test(.prob$solution_path,
+                  .prob$test_sample_path)
+  }, error = function(e) {
+    is_failed <<- T
+  })
 
   if (!is_failed) {
-    cat("All testcases have been passed\n")
+    message("All testcases have been passed\n")
   }
 }
 
@@ -117,29 +112,22 @@ test <- function(.prob) {
 submit.coder.prob <- function(.prob) {
   # I know this function looks duplicated with test.coder.prob, and this is
   # intended: let's play dumb during the development stage
-  desc <- yaml::yaml.load_file(.prob$yml_path)
-  testcases <- desc$systemtests
   is_failed <- F
 
   start_time <- Sys.time()
 
-  for (i in 1:length(testcases)) {
-    cat("Test", i, "... ")
-    testcase <- testcases[[i]]
-    tryCatch({
-      solution_test(.prob$solution_path, testcase)
-      cat("passed\n")
-    }, error = function(e) {
-      is_failed <<- T
-      cat("failed\n")
-    })
-  }
+  tryCatch({
+    solution_test(.prob$solution_path,
+                  .prob$test_system_path)
+  }, error = function(e) {
+    is_failed <<- T
+  })
 
   end_time <- Sys.time()
 
   if (!is_failed) {
-    cat("All systemtests have been passed\n")
-    cat(end_time - start_time, "(s) \n")
+    message("All systemtests have been passed\n")
+    message(end_time - start_time, "(s) \n")
   }
 
   # Save user result into user_data

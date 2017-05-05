@@ -1,11 +1,7 @@
-# TODO: 
-
-menu_start <- function(e, ...) UseMethod("menu_start")
 menu_probsets <- function(e, ...) UseMethod("menu_probsets")
 menu_probset <- function(e, ...) UseMethod("menu_probset")
 
-.recom_path <- system.file("probsets", "recommeded.yaml",
-                           package = "coder")
+.recom_path <- system.file("probsets", "recommeded.yaml", package = "coder")
 
 #' Show list of problem sets
 menu_probsets.default <- function(probset_paths) {
@@ -17,17 +13,8 @@ menu_probsets.default <- function(probset_paths) {
     selected_probset_name <-  select.list(probset_names,
                                           title = .title,
                                           graphic= F)
-    if (selected_probset_name == "") {
-      break
-    }
-
-    cat("\n")
-    .title <- paste("Problem set:", selected_probset_name)
-    .sel <-  select.list(c("Yes", "No"),
-                         title = .title,
-                         graphic= F)
-    if (.sel == "Yes") {
-      break
+    if (selected_probset_name %in% probset_names) {
+      is_selected <- T
     }
   }
 
@@ -42,20 +29,17 @@ menu_probset.default <- function(probset) {
   .prob_paths <- list.dirs(probset$path, full.names = T, recursive = F)
   .prob_names <- basename(.prob_paths)
 
-  .title <- "Select problem"
-  .prob_name <-  select.list(.prob_names,
-                            title = .title,
-                            graphic= F)
-  if (.prob_name == "") {
-    return(NULL)
-  }
+  is_selected <- F
+  while(is_selected == F) {
+    .title <- "Select problem"
+    .prob_name <-  select.list(.prob_names,
+                              title = .title,
+                              graphic= F)
 
-  cat("\n")
-  .title <- paste("Problem:", .prob_name)
-  .sel <-  select.list(c("Yes", "No"),
-                       title = .title,
-                       graphic= F)
-  if (.sel == "Yes") is_selected <- T
+    if (.prob_name %in% .prob_names) {
+      is_selected <- T
+    }
+  }
 
   # Create prob
   prob(probset$name,

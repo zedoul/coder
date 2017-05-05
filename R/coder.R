@@ -1,4 +1,3 @@
-
 #' Return probset class
 coder_probsets <- function() {
   probset_path <- system.file("probsets",
@@ -18,17 +17,18 @@ coder_prob <- function(probset) {
 
 .coder <- function(probset = NULL) {
   if (is.null(probset)) {
+    # Select problem set with UI
     probset <- coder_probsets()
     options(coder.probset = probset)
     .coder(probset)
   } else {
+    # Select problem with UI
     stopifnot(inherits(probset, "coder.probset"))
     prob <- coder_prob(probset)
     options(coder.prob = prob)
     cat("view_prob():\n")
     cat("edit_prob():\n")
     cat("test_prob():\n")
-    cat("submit_prob():\n")
   }
 }
 
